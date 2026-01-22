@@ -8,7 +8,7 @@ from datetime import datetime
 # =====================================================
 st.set_page_config(page_title="LiFin Health Insurance Lab", layout="wide")
 
-st.title("🏥 LiFin Health Insurance Lab — Developed by Prof.Shalini Velappan, IIM Trichy")
+st.title("🏥 LiFin Health Insurance Lab — Developed by Prof. Shalini Velappan, IIM Trichy")
 
 st.caption("""
 This is a **teaching simulator** to understand:
@@ -410,7 +410,7 @@ if st.button("▶️ Run Simulation"):
     st.write("Policy B:", {m: f"₹ {memberB[m]/sims:,.0f}" for m in members})
 
     # =====================================================
-    # Assignment
+    # Assignment (FIXED DOWNLOAD)
     # =====================================================
     st.markdown("## 📝 Student Reflection & Submission")
 
@@ -423,8 +423,12 @@ if st.button("▶️ Run Simulation"):
     q4 = st.text_area("4) Why is super top-up economically powerful?")
     q5 = st.text_area("5) Explain probability of ruin in your own words.")
 
+    if "submission_content" not in st.session_state:
+        st.session_state.submission_content = None
+
     if st.button("📄 Generate Submission File"):
-        content = f"""
+
+        st.session_state.submission_content = f"""
 LiFin Health Insurance Lab Submission
 Date: {datetime.now()}
 
@@ -444,7 +448,16 @@ Q3: {q3}
 Q4: {q4}
 Q5: {q5}
 """
-        st.download_button("⬇️ Download Submission", content, file_name=f"{name}_health_insurance_assignment.txt")
+
+        st.success("Submission file generated. Click Download below ⬇️")
+
+    if st.session_state.submission_content is not None:
+        st.download_button(
+            label="⬇️ Download Submission",
+            data=st.session_state.submission_content,
+            file_name=f"{name}_health_insurance_assignment.txt",
+            mime="text/plain"
+        )
 
 # =====================================================
 # Footer
